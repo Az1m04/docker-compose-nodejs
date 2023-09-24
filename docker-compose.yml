@@ -1,0 +1,35 @@
+version: '3'
+services:
+  #mongodb
+  mongo_db:
+    container_name: db_container
+    image: mongo
+    restart: always
+    ports:
+    - "27017:27017"
+    volumes:
+      - mongo_db:/data/db
+   
+
+    #node_server
+  demoserver:
+    container_name: demoserver
+    build: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      PORT: 5001
+      DB_CONNECT: mongodb://mongo_db:27017/products
+      ACCESS_TOKEN_SECRET: 3s6v9y$B&E)H@McQfThWmZq4t7w!z%C*
+      ACCESS_TOKEN_LIFE: 86400
+      AWS_BUCKET_NAME: ohm
+      AWS_ACCESS_KEY_ID: AKIAUZZ6WIKCKXENABML
+      AWS_SECRET_ACCESS_KEY: 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
+      AWS_REGION: us-east-1
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_db: {}
